@@ -1,5 +1,4 @@
 import 'package:counter_bloc_example/bloc/counter_bloc.dart';
-import 'package:counter_bloc_example/bloc/counter_event.dart';
 import 'package:counter_bloc_example/cubit/counter_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,18 +14,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => CounterCubit()),
-          BlocProvider(create: (context) => CounterBloc()),
-        ],
-        child: const MyHomePage(),
-      ),
-    );
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const MyHomePage());
   }
 }
 
@@ -48,9 +40,9 @@ class MyHomePage extends StatelessWidget {
               return Text(state.toString());
             }),
             const Text('CounterBloc:'),
-            BlocBuilder<CounterBloc, int>(builder: (context, state) {
-              return Text(state.toString());
-            })
+            BlocBuilder<CounterBloc, CounterState>(builder: (context, state) {
+              return Text(state.email.toString());
+            }),
           ],
         ),
       ),
@@ -68,7 +60,6 @@ class MyHomePage extends StatelessWidget {
           ),
           FloatingActionButton(
             onPressed: () {
-              // context.read<CounterCubit>().decrement();
               context.read<CounterBloc>().add(DecrementEvent());
             },
             child: const Icon(Icons.remove),
@@ -78,6 +69,7 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
+
 
 // class MyHomePage extends StatefulWidget {
 //   const MyHomePage({super.key, required this.title});
